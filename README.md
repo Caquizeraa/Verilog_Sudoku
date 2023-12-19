@@ -42,5 +42,13 @@ assign rising_edge = ~ffs[1] & ffs[0];
 pulse <= (rstn == 0) ? 1'b0 : rising_edge;
 ```
 
+### Caixa preta do Sudoku (PixelGen)
 
+Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas da placa e as interpreta para o correto andamento do jogo. Além disso, recebe como entrada diversas informações referentes à renderização do jogo no monitor, provenientes do circuito **VGASync**, e tem como função determinar o valor RGB do pixel expecificado (**pixel_x** e **pixel_y**). Também manipula as demais saídas da placa, como os **leds** e **displays de sete segmentos**.
+
+<p align="center">
+  <img src="./readmeFiles/pixelGen.gif" alt="Funcionamento do jogo">
+</p>
+
+### 
 
