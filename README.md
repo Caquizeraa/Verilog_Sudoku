@@ -62,4 +62,16 @@ O circuito **AsyncSwitchSincronizer** possui dois **flip-flops do tipo D** conec
   <img src="./readmeFiles/switchSync.png" alt="Sincronizadores do Switch">
 </p>
 
+### Registradores
+
+Os registradores são responsáveis por salvar dados que podem ser acessíveis por outros circuitos. Possuem uma entrada **enable**, que quando ativa em alto permite que novos valores sejam sobreescritos, e uma entrada **clear**, que reseta o valor salvo para o valor inicial.
+
+O projeto conta com inúmeros desses circuitos instanciados de forma que, em conjunto, eles armazenam o estado global do jogo. Dessa forma, eles permitem que diferentes circuitos se comuniquem e que a máquina de estados possa determinar de maneira correta qual tarefa deve ser executada em determinado momento. Assim, os demais circuitos do sistema atualizam os valores dos registradores e também os consultam para garantir o funcionamento do jogo.
+
+Ao todo são 7 registradores: **linha**, **coluna**, **valor**, **posicaoValida**, **verificaJogo**, **sudokuJogador**, **sudokuFinal**.
+
+<p align="center">
+  <img src="./readmeFiles/registrador.png" alt="Sincronizadores do Switch">
+</p>
+
 
