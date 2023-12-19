@@ -44,13 +44,17 @@ pulse <= (rstn == 0) ? 1'b0 : rising_edge;
 
 ### Caixa preta do Sudoku (PixelGen)
 
-Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas da placa e as interpreta para o correto andamento do jogo. Além disso, recebe como entrada diversas informações referentes à renderização do jogo no monitor, provenientes do circuito **VGASync**, e tem como função determinar o valor RGB do pixel expecificado (**pixel_x** e **pixel_y**). Também manipula as demais saídas da placa, como os **leds** e **displays de sete segmentos**.
-
 <p align="center">
   <img src="./readmeFiles/pixelGen.gif" alt="PixelGen">
 </p>
 
+Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas da placa e as interpreta para o correto andamento do jogo. Além disso, recebe como entrada diversas informações referentes à renderização do jogo no monitor, provenientes do circuito **VGASync**, e tem como função determinar o valor RGB do pixel expecificado (**pixel_x** e **pixel_y**). Também manipula as demais saídas da placa, como os **leds** e **displays de sete segmentos**.
+
 ### Sincronizadores Switches (AsyncSwitchSynchronizer)
+
+<p align="center">
+  <img src="./readmeFiles/switchSync.png" alt="Sincronizadores do Switch">
+</p>
 
 Circuito responsável por receber os swiches da placa e os sincroniza com o sinal de clock.
 
@@ -58,11 +62,27 @@ Cada um dos switches é sincronziado individualmente pelo circuito **AsyncSwitch
 
 O circuito **AsyncSwitchSincronizer** possui dois **flip-flops do tipo D** conectados em série e ativos na borda de subida do clock. Dessa forma, há maior confiabilidade no valor de saída produzido pelo circuito.
 
-<p align="center">
-  <img src="./readmeFiles/switchSync.png" alt="Sincronizadores do Switch">
-</p>
+```
+if(asyncn == 0)
+	begin
+		first_ff <= 0;
+		second_ff <= 0;
+	end
+	else
+	  begin
+			first_ff <= 1;
+			second_ff <= first_ff;
+		end	
+```
+```
+assign syncn = second_ff;
+```
 
 ### Registradores
+
+<p align="center">
+  <img src="./readmeFiles/registrador.png" alt="Sincronizadores do Switch">
+</p>
 
 Os registradores são responsáveis por salvar dados que podem ser acessíveis por outros circuitos. Possuem uma entrada **enable**, que quando ativa em alto permite que novos valores sejam sobreescritos, e uma entrada **clear**, que reseta o valor salvo para o valor inicial.
 
@@ -70,8 +90,20 @@ O projeto conta com inúmeros desses circuitos instanciados de forma que, em con
 
 Ao todo são 7 registradores: **linha**, **coluna**, **valor**, **posicaoValida**, **verificaJogo**, **sudokuJogador**, **sudokuFinal**.
 
-<p align="center">
-  <img src="./readmeFiles/registrador.png" alt="Sincronizadores do Switch">
-</p>
+No momento da criação de cada um deles, o **Verilog** permite que sejam especificados parâmetros de instanciação. Nesse caso, cada registrador é criado com uma capacidade de armazenamento (número de bits) e com um valor inicial específicos. Assim, o circuito se adapta melhor a cada necessidade, se torna mais flexível e permite a sua reutilização em diferentes contextos.
+
+```
+if(!rstn)
+	valorSalvo <= valorInicial;
+else begin
+	if(enable)
+		valorSalvo <= dadoEntrada;
+	else
+		valorSalvo <= valorSalvo;
+end
+```
+```
+dadoSaida <= valorSalvo;
+```
 
 
