@@ -63,16 +63,14 @@ Cada um dos switches é sincronziado individualmente pelo circuito **AsyncSwitch
 O circuito **AsyncSwitchSincronizer** possui dois **flip-flops do tipo D** conectados em série e ativos na borda de subida do clock. Dessa forma, há maior confiabilidade no valor de saída produzido pelo circuito.
 
 ```
-if(asyncn == 0)
-	begin
+if(asyncn == 0) begin
 		first_ff <= 0;
 		second_ff <= 0;
-	end
-	else
-	  begin
-			first_ff <= 1;
-			second_ff <= first_ff;
-		end	
+end
+else begin
+		first_ff <= 1;
+		second_ff <= first_ff;
+end	
 ```
 ```
 assign syncn = second_ff;
