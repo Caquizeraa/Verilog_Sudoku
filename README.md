@@ -47,8 +47,19 @@ pulse <= (rstn == 0) ? 1'b0 : rising_edge;
 Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas da placa e as interpreta para o correto andamento do jogo. Além disso, recebe como entrada diversas informações referentes à renderização do jogo no monitor, provenientes do circuito **VGASync**, e tem como função determinar o valor RGB do pixel expecificado (**pixel_x** e **pixel_y**). Também manipula as demais saídas da placa, como os **leds** e **displays de sete segmentos**.
 
 <p align="center">
-  <img src="./readmeFiles/pixelGen.gif" alt="Funcionamento do jogo">
+  <img src="./readmeFiles/pixelGen.gif" alt="PixelGen">
 </p>
 
-### 
+### Sincronizadores Switches (AsyncSwitchSynchronizer)
+
+Circuito responsável por receber os swiches da placa e os sincroniza com o sinal de clock.
+
+Cada um dos switches é sincronziado individualmente pelo circuito **AsyncSwitchSincronizer** e a saída dos dez switches sincronizados é comprimida em um array de 10 bits. 
+
+O circuito **AsyncSwitchSincronizer** possui dois **flip-flops do tipo D** conectados em série e ativos na borda de subida do clock. Dessa forma, há maior confiabilidade no valor de saída produzido pelo circuito.
+
+<p align="center">
+  <img src="./readmeFiles/switchSync.png" alt="Sincronizadores do Switch">
+</p>
+
 
