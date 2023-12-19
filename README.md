@@ -25,6 +25,18 @@ Além das funcionalidades básicas de um sudoku, a dupla decidiu expandir o esco
   <img src="./readmeFiles/visaoGeralCircuito.png" alt="Visão Geral do Circuito">
 </p>
 
+### Máquina de Estados (EstadoJogo)
+
+<p align="center">
+  <img src="./readmeFiles/estadoJogo.png" alt="Máquina de Estados">
+</p>
+
+### Ativador de Circuitos (DemuxEstado)
+
+<p align="center">
+  <img src="./readmeFiles/demuxEstado.png" alt="Demux do Estado">
+</p>
+
 ### Circuito Detector de Borda (Edge Detector)
 
 <p align="center">
@@ -104,4 +116,96 @@ end
 dadoSaida <= valorSalvo;
 ```
 
+### Codificador dos Switches (CodificadorSwitch)
+
+Circuito que atua como um **codificador de prioridade** e converte o valor dos switches em um número entre **1 e 9** (linha, coluna ou valor).
+
+Cada switch é associado a um número no intervalo de 1 a 9 e, dessa forma, ele captura o switch com o valor mais alto e ignora o estado dos anteriores.
+
+```
+casex (switch)
+	9'b1xxxxxxxx: switchCod = 4'd9;
+	9'b01xxxxxxx: switchCod = 4'd8;
+	9'b001xxxxxx: switchCod = 4'd7;
+	9'b0001xxxxx: switchCod = 4'd6;
+	9'b00001xxxx: switchCod = 4'd5;
+	9'b000001xxx: switchCod = 4'd4;
+	9'b0000001xx: switchCod = 4'd3;
+	9'b00000001x: switchCod = 4'd2;
+	9'b000000001: switchCod = 4'd1;
+	default: switchCod = 4'd0;
+endcase
+```
+
+### Recebe Entradas do Usuário (RecebeEntradas)
+
+<p align="center">
+  <img src="./readmeFiles/recebeEntradas.png" alt="Sincronizadores do Switch">
+</p>
+
+Circuito responsável por capturar a entrada do usuário nos switches e, dependendo do estado atual (máquina de estados), repassar esse valor para o registrador referente (linha, coluna ou valor).
+
+Assim, ele utiliza o estado atual (proveniente da máquina de estados) como entrada de seleção para um demultiplexador que recebe o valor 1 na entrada e o transmite como enable a apenas um dos registradores. Dessa forma, ele passa a saída codificada dos switches para todos os registradores (linha, coluna e valor), mas apenas um deles recebe o sinal de enable em alto. 
+
+```
+if(keyEnter) begin // demux  registradores
+			
+	case (estadoJogo)
+    3'b000: begin
+      enableLinha = 1;
+      enableColuna = 0;
+      enableValor = 0;
+    end
+    
+    3'b001: begin	
+      enableLinha = 0;
+      enableColuna = 1;
+      enableValor = 0;
+    end
+
+    3'b011: begin
+      enableLinha = 0;
+      enableColuna = 0;
+      enableValor = 1;
+    end
+
+    default: begin
+      enableLinha = 0;
+      enableColuna = 0;
+      enableValor = 0;
+    end
+  endcase
+  
+end
+```
+
+### Mostra Entradas do Usuário (MostraEntradas)
+
+<p align="center">
+  <img src="./readmeFiles/mostraEntradas.png" alt="Mostra entradas do usuário">
+</p>
+
+### Verifica Posição Escolhida pelo Usuário (VerificaPosicao)
+
+### Verifica Jogada Feita pelo Usuário (VerificaJogada)
+
+### Reseta Entradas do Usuário (ResetaEntrada)
+
+<p align="center">
+  <img src="./readmeFiles/resetaEntrada.png" alt="Reseta entradas do usuário">
+</p>
+
+### Fim de Jogo (FimJogo)
+
+<p align="center">
+  <img src="./readmeFiles/fimJogo.png" alt="Circuito de Fim de Jogo">
+</p>
+
+### Renderiza Saída no Monitor (Tabuleiro)
+
+<p align="center">
+  <img src="./readmeFiles/tabuleiro.png" alt="Renderiza Tabuleiro">
+</p>
+
+### Modo Fornece Dicas (ModoDica)
 
