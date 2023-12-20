@@ -377,6 +377,7 @@ Dessa forma, o circuito pode se encontrar em três situações:
     O led fica piscando e o valor mostrado provém do valor definido nos switches (entrada está sendo captura nesse exato momento)
 
   * Estado monitorado maior que o estado atual
+
     O led fica desligado (as entradas anteriores ainda não foram selecionadas).
 
 ```
@@ -416,6 +417,16 @@ else
 <p align="center">
   <img src="./readmeFiles/resetaEntrada.png" alt="Reseta entradas do usuário">
 </p>
+
+Circuito responsável por resetar as entradas selecionadas pelo usuário ao receber o acionamento da **resetKey**.
+
+Produz uma saída que é conectada nas entradas reset da máquina de estado e dos registradores, que, quando em nível baixo, limpa todas as entradas do usuário selecionadas até então e retorna para a etapa de seleção de linha.
+
+Para isso, o circuito faz uma porta **AND** com o valor da entrada **keyReset** e da saída do **comparador de magnitude** (garante que o estado atual ainda seja de escolha de uma das entradas: linha, coluna ou valor). Essa saída possui seu valor negado, visto que a entrada reset é ativa em nível baixo.
+
+```
+saidaResetEntrada <= !(keyReset && (estadoJogo <= recebeValor));
+```
 
 ### Fim de Jogo (FimJogo)
 
