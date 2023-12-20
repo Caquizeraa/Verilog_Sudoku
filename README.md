@@ -57,16 +57,13 @@ O cálculo do próximo estado é feito considerando o estado atual e o valor sal
 ```
 case(state_reg)
 
-	recebeLinha:                                                      verificaJogo:
-		if(registradores[16:13]) state_next = recebeColuna;               if(registradores[2]) begin
-		else state_next = recebeLinha;                                      case (registradores[1:0])
-                                                                          2'b00: state_next = recebeLinha; // jogada valida e jogo em andamento
-	recebeColuna:                                                           2'b01: state_next = fimJogo; // jogada valida e jogo completo
-    if(registradores[12:9]) state_next = verificaPos;                     2'b10: state_next = fimJogo; // jogada invalida (fim jogo)
-    else state_next = recebeColuna;                                       default: state_next = verificaJogo;
-                                                                        endcase
-                                                                      end
-                                                                      else state_next = verificaJogo;
+	recebeLinha:
+		if(registradores[16:13]) state_next = recebeColuna;
+		else state_next = recebeLinha;
+
+	recebeColuna:
+    if(registradores[12:9]) state_next = verificaPos;
+    else state_next = recebeColuna;
 
   recebeValor:
     if(registradores[8:5]) state_next = verificaJogo;
@@ -81,9 +78,23 @@ case(state_reg)
     end
     else state_next = verificaPos;
 
+  verificaJogo:
+    if(registradores[2]) begin
+      case (registradores[1:0])
+        2'b00:
+          state_next = recebeLinha; // jogada valida e jogo em andamento
+        2'b01:
+          state_next = fimJogo; // jogada valida e jogo completo
+        2'b10:
+          state_next = fimJogo; // jogada invalida (fim jogo)
+        default:
+          state_next = verificaJogo;
+      endcase
+    end
+    else state_next = verificaJogo;
+    
   default:
     state_next = fimJogo;
-
 endcase
 ```
 
