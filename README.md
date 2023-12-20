@@ -440,11 +440,45 @@ saidaResetEntrada <= !(keyReset && (estadoJogo <= recebeValor));
   <img src="./readmeFiles/tabuleiro.png" alt="Renderiza Tabuleiro">
 </p>
 
+Circuito responsável por definir se derminado pixel recebido como entrada pertence à renderização do tabuleiro no monitor ou não.
+
+Para isso, ele armazena quais coordenadas de linha e coluna compõe o tabuleiro. Para reduzir o gasto desnecessário de memória, foram utilizados diversos artíficios visando salvar o mínimo de informações referentes ao desenho do tabuleiro.
+
+  * A primeira delas, foi interpretar o sudoku como um tabuleiro composto por subblocos idênticos que se repetem. Além disso, como se tratam de quadrados, pode-se garantir que as coordenadas verticais e horizontais são sempre as mesmas, devido a sua simetria.
+
+  * Além disso, foi criada uma lógica de proporção, que permite representar cada quatro pixels na tela como apenas um único pixel. Dessa forma, internamente o tabuleiro é desenhado em uma proporção dezesseis vezes menor (redução da área é impactada duas vezes, uma para cada dimensão).
+
+Para fazer a renderização dos números presentes no tabuleiro, foi instanciado um circuito chamado **DesenhaNumeros** que realiza a verificação se determinado pixel pertence ou não ao desenho do tabuleiro.
+
+```
+always@* begin
+
+  if(~video_on) {r, g, b} = 12'h000;
+
+  else if(tab_on) {r, g, b} = tab_rgb;
+
+  else {r, g, b} = BACKGROUND_COLOR;
+
+end
+```
+
 ### Renderiza Saída no Monitor (DesenhaNumeros)
 
 <p align="center">
   <img src="./readmeFiles/desenhaNum.png" alt="Renderiza Tabuleiro">
 </p>
+
+Circuito interno ao **Tabuleiro** responsável por definir se derminado pixel recebido como entrada pertence ao bitmap do número presente naquela posição ou não.
+
+Para isso, ele armazena o bitmap de todos os algarismos que podem aparecer no tabuleiro do sudoku. Dessa forma, ele recebe como entrada o numero que pertence àquela posição e as coordenadas x e y relativas de tal posição (coordenadas internas de uma posição específica do tabuleiro). Assim, basta consultar se tal pixel possui valor 0 ou 1 no bitmap do número especificado.
+
+```
+if(3 <= posX && posX <= 10 && 3 <= posY && posY <= 10)
+  num_on <= numeroAtual[(posX - 3) + ( (posY - 3) * 8)];
+
+else
+  num_on <= 0;
+```
 
 ### Modo Fornece Dicas (ModoDica)
 
