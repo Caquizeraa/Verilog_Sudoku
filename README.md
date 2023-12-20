@@ -440,5 +440,11 @@ saidaResetEntrada <= !(keyReset && (estadoJogo <= recebeValor));
   <img src="./readmeFiles/tabuleiro.png" alt="Renderiza Tabuleiro">
 </p>
 
+### Renderiza Saída no Monitor (DesenhaNumeros)
+
+<p align="center">
+  <img src="./readmeFiles/desenhaNum.png" alt="Renderiza Tabuleiro">
+</p>
+
 ### Modo Fornece Dicas (ModoDica)
 
