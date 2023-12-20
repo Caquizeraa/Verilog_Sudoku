@@ -54,6 +54,12 @@ else
 
 O cálculo do próximo estado é feito considerando o estado atual e o valor salvo nos registradores. Sempre que algum dos registradores relacionados a lógica dos estados é alterado, a variável que armazena o estado seguinte é atualizada.
 
+Todos circuitos, cada um ativo em um estado específico, executam suas funções e, para garantir que o próximo estado seja computado corretamente, atualizam os valores dos registradores associados a ele. Essa mudança é percebida pelo circuito da máquina de estados que consulta o novo valor dos registradores e avalia qual deve ser o estado seguinte.
+
+Por exemplo, considere o estado verifica jogo. Tal estado é responsável por verificar se o valor inserido em determinada posição (já verificada como uma posição válida pelo estado anterior) constitui uma jogada válida. Além disso, ele deve determinar o resultado dessa jogada: uma jogada inválida necessariamente finaliza o jogo, porém, uma jogada válida pode encerrar o jogo ou não, dependendo do tabuleiro estar completo ou não. No caso do jogo ainda não se encerrar, todos registradores relacionados à máquina de estados devem ser resetados para que estejam disponíveis para a próxima jogada (caso contrário a máquina de estados consultaria valores antigos e pularia diversos estados).
+
+Ainda nesse caso específico do estado de verifica jogada, dependendo da jogada feita ele pode exibir 3 saídas possíveis, que serão gravadas em seus registradores e, posteriormente, consideradas pela máquina de estados para avançar para o estado adequado. Tais saídas contam com 3 bits: o primeiro informa se o circuito já terminou sua tarefa de computar a jogada  (0 em caso negativo e 1 em caso positivo). Enquanto esse primeiro bit for 0 a máquina de estados garante que vai permancer no estado de verifica jogada. Os próximos dois bits (acertou e não acabou -> 00, acertou e acabou -> 01, errou -> 10) determinarão, então,  o pŕoximo estado.
+
 ```
 case(state_reg)
 
