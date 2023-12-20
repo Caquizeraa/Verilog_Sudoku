@@ -43,7 +43,49 @@ Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas
   <img src="./readmeFiles/estadoJogo.png" alt="Máquina de Estados">
 </p>
 
+A cada clock, o estado atual é atualizado com o valor salvo do estado seguinte (pode ser, inclusive, o próprio estado atual).
 
+```
+if(!rstn)
+  state_reg <= recebeLinha;
+else
+	state_reg <= state_next;
+```
+
+O cálculo do próximo estado é feito considerando o estado atual e o valor salvo nos registradores. Sempre que algum dos registradores relacionados a lógica dos estados é alterado, a variável que armazena o estado seguinte é atualizada.
+
+```
+case(state_reg)
+
+	recebeLinha:                                                      verificaJogo:
+		if(registradores[16:13]) state_next = recebeColuna;               if(registradores[2]) begin
+		else state_next = recebeLinha;                                      case (registradores[1:0])
+                                                                          2'b00: state_next = recebeLinha; // jogada valida e jogo em andamento
+	recebeColuna:                                                           2'b01: state_next = fimJogo; // jogada valida e jogo completo
+    if(registradores[12:9]) state_next = verificaPos;                     2'b10: state_next = fimJogo; // jogada invalida (fim jogo)
+    else state_next = recebeColuna;                                       default: state_next = verificaJogo;
+                                                                        endcase
+                                                                      end
+                                                                      else state_next = verificaJogo;
+
+  recebeValor:
+    if(registradores[8:5]) state_next = verificaJogo;
+    else state_next = recebeValor;
+
+  verificaPos:
+    if(registradores[4]) begin
+      if(registradores[3])
+        state_next = recebeValor;
+      else
+        state_next = recebeLinha;
+    end
+    else state_next = verificaPos;
+
+  default:
+    state_next = fimJogo;
+
+endcase
+```
 
 ### Ativador de Circuitos (DemuxEstado)
 
