@@ -57,11 +57,11 @@ O cálculo do próximo estado é feito considerando o estado atual e o valor sal
 ```
 case(state_reg)
 
-	recebeLinha:
-		if(registradores[16:13]) state_next = recebeColuna;
-		else state_next = recebeLinha;
+  recebeLinha:
+    if(registradores[16:13]) state_next = recebeColuna;
+    else state_next = recebeLinha;
 
-	recebeColuna:
+  recebeColuna:
     if(registradores[12:9]) state_next = verificaPos;
     else state_next = recebeColuna;
 
