@@ -313,6 +313,50 @@ end
   <img src="./readmeFiles/mostraEntradas.png" alt="Mostra entradas do usuário">
 </p>
 
+Circuito responsável por mostras as entradas selecionadas pelo usuário nos **displays de sete segmentos**.
+
+Instancia um circuito **SEG7_LUT** para cada um dos seis displays. 3 deles, referentes aos rótulos das entradas, permanecem sempre ativos e com valores fixos. Os outros 3, referentes aos valores inseridos pelo usuário, podem estar ativos e fixos, ativos e piscando ou então desligados.
+
+Os 3 leds referentes às entradas do usuário são gerenciados individualmente pelo circuito **ControlaHex**.
+
+O circuito **SEG7_LUT** basicamente codifica os valores de 1 a 9 e alguns caracteres para os bits que acendem corretamente cada segmento dos displays.
+
+```
+SEG7_LUT v5(.iDIG(4'ha), .oSEG(h5));
+SEG7_LUT v3(.iDIG(4'hb), .oSEG(h3));
+SEG7_LUT v1(.iDIG(4'hc), .oSEG(h1));
+
+SEG7_LUT v4(.iDIG(saidaHexLinha), .oSEG(h4));
+SEG7_LUT v2(.iDIG(saidaHexColuna), .oSEG(h2));
+SEG7_LUT v0(.iDIG(saidaHexValor), .oSEG(h0));
+
+
+ControlaHex #(.meuEstado(3'b000)) hexLinha(
+  .clk(clk),
+  .estadoJogo(estadoJogo), 
+  .switchCod(switchCod),
+  .registrador(regLinha),
+  .hex(saidaHexLinha)
+);
+
+ControlaHex #(.meuEstado(3'b001)) hexColuna(
+  .clk(clk),
+  .estadoJogo(estadoJogo), 
+  .switchCod(switchCod),
+  .registrador(regColuna),
+  .hex(saidaHexColuna)
+);
+
+ControlaHex #(.meuEstado(3'b011)) hexValor(
+  .clk(clk),
+  .estadoJogo(estadoJogo), 
+  .switchCod(switchCod),
+  .registrador(regValor),
+  .hex(saidaHexValor)
+);
+
+```
+
 ### Verifica Posição Escolhida pelo Usuário (VerificaPosicao)
 
 ### Verifica Jogada Feita pelo Usuário (VerificaJogada)
