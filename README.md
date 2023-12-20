@@ -36,8 +36,14 @@ Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas
 ### Máquina de Estados (EstadoJogo)
 
 <p align="center">
+  <img src="./readmeFiles/diagramaEstados.png" alt="Máquina de Estados">
+</p>
+
+<p align="center">
   <img src="./readmeFiles/estadoJogo.png" alt="Máquina de Estados">
 </p>
+
+
 
 ### Ativador de Circuitos (DemuxEstado)
 
