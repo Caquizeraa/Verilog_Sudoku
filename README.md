@@ -171,6 +171,8 @@ endcase
 
 ### Circuito Detector de Borda (Edge Detector)
 
+###### * EdgeDetector: Código de autoria do docente [Bruno de Abreu](https://github.com/brabreus)
+
 <p align="center">
   <img src="./readmeFiles/edgeDetector.png" alt="Circuito Detector de Borda">
 </p>
@@ -194,9 +196,11 @@ pulse <= (rstn == 0) ? 1'b0 : rising_edge;
 
 Circuito responsável por receber os swiches da placa e os sincroniza com o sinal de clock.
 
-Cada um dos switches é sincronziado individualmente pelo circuito **AsyncSwitchSincronizer** e a saída dos dez switches sincronizados é comprimida em um array de 10 bits. 
+Cada um dos switches é sincronziado individualmente pelo circuito **AsyncInputSincronizer** e a saída dos dez switches sincronizados é comprimida em um array de 10 bits. 
 
-O circuito **AsyncSwitchSincronizer** possui dois **flip-flops do tipo D** conectados em série e ativos na borda de subida do clock. Dessa forma, há maior confiabilidade no valor de saída produzido pelo circuito.
+O circuito **AsyncInputSincronizer** possui dois **flip-flops do tipo D** conectados em série e ativos na borda de subida do clock. Dessa forma, há maior confiabilidade no valor de saída produzido pelo circuito.
+
+###### * AsyncInputSincronizer: Código de autoria do docente [Bruno de Abreu](https://github.com/brabreus)
 
 ```
 if(asyncn == 0) begin
