@@ -110,6 +110,65 @@ endcase
   <img src="./readmeFiles/demuxEstado.png" alt="Demux do Estado">
 </p>
 
+Circuito responsável por ativar apenas o circuito associado ao estado atual.
+
+Utiliza a saída da máquina de estados como entrada de seleção de um demultiplexador, que passa a entrada com valor 1, para a porta **enable** de apenas um dos circuitos que estão conectados.
+
+```
+case (estadoJogo)
+
+  recebeLinha: begin
+    enableRecebeEntrada <= 1;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 0; 
+  end
+
+  recebeColuna: begin
+    enableRecebeEntrada <= 1;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 0; 
+  end
+
+  recebeValor: begin
+    enableRecebeEntrada <= 1;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 0; 
+  end
+
+  verificaPos: begin
+    enableRecebeEntrada <= 0;
+    enableVerificaPos <= 1;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 0; 
+  end
+
+  verificaJogo: begin
+    enableRecebeEntrada <= 0;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 1;
+    enableFimJogo <= 0; 
+  end
+
+  fimJogo: begin
+    enableRecebeEntrada <= 0;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 1; 
+  end
+
+  default: begin
+    enableRecebeEntrada <= 1;
+    enableVerificaPos <= 0;
+    enableVerificaJogo <= 0;
+    enableFimJogo <= 0; 
+  end
+      
+endcase
+```
+
 ### Circuito Detector de Borda (Edge Detector)
 
 <p align="center">
