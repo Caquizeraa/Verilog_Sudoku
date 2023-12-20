@@ -356,6 +356,56 @@ ControlaHex #(.meuEstado(3'b011)) hexValor(
 );
 
 ```
+### Gerencia os Displays de Entradas do Usuário (ControlaHex)
+
+<p align="center">
+  <img src="./readmeFiles/controlaHex.png" alt="Reseta entradas do usuário">
+</p>
+
+Circuito instanciado três vezes: gerenciar entrada de linha, coluna e valor.
+
+Possui comparadores de magnitude e determina se o estado atual que o jogo se encontra é maior, menor ou igual ao estado que ele monitora (propositalmente, os valores de saída da máquina de estados foram organizados em ordem cronológica de execução).
+
+Dessa forma, o circuito pode se encontrar em três situações:
+
+  * Estado monitorado menor que o estado atual
+
+    O led fica aceso de forma fixa e o valor mostrado provém dos registradores (entrada já foi capturada e salva nos registradores)
+
+  * Estado monitorado igual ao estado atual
+
+    O led fica piscando e o valor mostrado provém do valor definido nos switches (entrada está sendo captura nesse exato momento)
+
+  * Estado monitorado maior que o estado atual
+    O led fica desligado (as entradas anteriores ainda não foram selecionadas).
+
+```
+if(meuEstado < estadoJogo)begin
+  //Led fixo
+  valorHex <= registrador;
+  enable <= 1'b1;
+end
+
+else if(meuEstado > estadoJogo)begin
+  //Led apagado
+  hex <= 4'he;
+  enable <= 1'b0;
+end
+
+else begin
+  //Led Piscando
+  valorHex <= switchCod;
+  enable <= saidaDivisor;
+end
+```
+No caso em que o led está aceso de forma fixa, a entrada enable recebe o valor 1 a todo momento. De forma similar, no caso em que o led está apagado de forma fixa, a entrada enable recebe o valor 0 a todo momento. Porém, quando o led se sencontra piscando, sua entrada enable é proveniente de um **divisor de frequências**, o qual intercala esse valor entre 0 e 1 em intervalos de tempos iguais e determinados pela magnitude do valor que o clock é dividido.
+
+```
+if(enable)
+	hex <= valorHex;
+else
+  hex <= 4'he;
+```
 
 ### Verifica Posição Escolhida pelo Usuário (VerificaPosicao)
 
