@@ -435,6 +435,7 @@ else
 <p align="center">
   <img src="./readmeFiles/fimJogo.png" alt="Circuito de Fim de Jogo">
 </p>
+
 Circuito responsável por **reiniciar** o jogo, atuando de forma distinta com base em cada um dos possíveis casos de reinício.
 
 O circuito **Verifica Jogada** analisa se a jogada feita pelo usuário foi válida ou não, e se a mesma, preencheu ou não o tabuleiro. Logo após, salva essa informação na memória por meio dos registradores. 
