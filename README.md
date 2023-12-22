@@ -16,19 +16,19 @@ Inicialmente, o tabuleiro irá aparecer no monitor via saída VGA, a partir de u
 Além das funcionalidades básicas de um sudoku, a dupla decidiu expandir o escopo do projeto visando tornar o jogo o mais rico possível. Sendo assim, foi incrementado o **"modo dica"** (leds acesos acima dos swiches), o qual será mais detalhado adiante.
 
 <p align="center">
-  <img src="../_resources/apresentacao.gif" alt="Funcionamento do jogo">
+  <img src=":/5afede72008a4e768c88525cdf3e3bfc" alt="Funcionamento do jogo">
 </p>
 
 ## Detalhes da implementação
 
 <p align="center">
-  <img src="../_resources/visaoGeralCircuito.png" alt="Visão Geral do Circuito">
+  <img src=":/2c5aa75bb959486aa85e4688d43084d0" alt="Visão Geral do Circuito">
 </p>
 
 ### Caixa preta do Sudoku (PixelGen)
 
 <p align="center">
-  <img src="../_resources/pixelGen.gif" alt="PixelGen">
+  <img src=":/41565cdf41ea438f9cd3a8b92285c99f" alt="PixelGen">
 </p>
 
 Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas da placa e as interpreta para o correto andamento do jogo. Além disso, recebe como entrada diversas informações referentes à renderização do jogo no monitor, provenientes do circuito **VGASync**, e tem como função determinar o valor RGB do pixel expecificado (**pixel_x** e **pixel_y**). Também manipula as demais saídas da placa, como os **leds** e **displays de sete segmentos**.
@@ -36,11 +36,11 @@ Circuito responsável por implementar toda a lógica do jogo. Recebe as entradas
 ### Máquina de Estados (EstadoJogo)
 
 <p align="center">
-  <img src="../_resources/diagramaEstados.png" alt="Máquina de Estados">
+  <img src=":/872c172c8c894c60b70fadce42db7998" alt="Máquina de Estados">
 </p>
 
 <p align="center">
-  <img src="../_resources/estadoJogo.png" alt="Máquina de Estados">
+  <img src=":/8467c4078ea14b7ba1b0c0879f292646" alt="Máquina de Estados">
 </p>
 
 A cada clock, **o estado atual** é atualizado com o valor salvo do **estado seguinte** (pode ser, inclusive, o próprio estado atual).
@@ -107,7 +107,7 @@ endcase
 ### Ativador de Circuitos (DemuxEstado)
 
 <p align="center">
-  <img src="../_resources/demuxEstado.png" alt="Demux do Estado">
+  <img src=":/3871733bde944a2db231ba159428e89b" alt="Demux do Estado">
 </p>
 
 Circuito responsável por **ativar apenas o circuito associado ao estado atual**.
@@ -174,7 +174,7 @@ endcase
 ###### * EdgeDetector: Código de autoria do docente [Bruno de Abreu](https://github.com/brabreus)
 
 <p align="center">
-  <img src="../_resources/edgeDetector.png" alt="Circuito Detector de Borda">
+  <img src=":/d0c40112f95f45f0a56b32d69dffd91a" alt="Circuito Detector de Borda">
 </p>
 
 O circuito **detector de borda** é responsável por transformar o **pressionamento** de um dos botões (**EnterKey** e **ResetKey**), que pode perdurar por vários clock's, em **apenas um pulso de clock**.
@@ -191,7 +191,7 @@ pulse <= (rstn == 0) ? 1'b0 : rising_edge;
 ### Sincronizadores Switches (AsyncSwitchSynchronizer)
 
 <p align="center">
-  <img src="../_resources/switchSync.png" alt="Sincronizadores do Switch">
+  <img src=":/b7926b037d53476f945a864d388aa6ca" alt="Sincronizadores do Switch">
 </p>
 
 Circuito responsável por receber os swiches da placa e os **sincroniza** com o sinal de **clock**.
@@ -219,7 +219,7 @@ assign syncn = second_ff;
 ### Registradores
 
 <p align="center">
-  <img src="../_resources/registrador.png" alt="Sincronizadores do Switch">
+  <img src=":/112c85babdd8478b8cd0f6d156a451d1" alt="Sincronizadores do Switch">
 </p>
 
 Os registradores são responsáveis por **salvar dados** que podem ser acessíveis por outros circuitos. Possuem uma entrada **enable**, que quando ativa em alto permite que novos valores sejam sobreescritos, e uma entrada **clear**, que reseta o valor salvo para o valor inicial.
@@ -268,7 +268,7 @@ endcase
 ### Recebe Entradas do Usuário (RecebeEntradas)
 
 <p align="center">
-  <img src="../_resources/recebeEntradas.png" alt="Sincronizadores do Switch">
+  <img src=":/ebc0ccee0baa453491688f4198c30ec9" alt="Sincronizadores do Switch">
 </p>
 
 Circuito responsável por **capturar a entrada do usuário nos switches** e, dependendo do estado atual (máquina de estados), repassar esse valor para o registrador referente (linha, coluna ou valor).
@@ -310,7 +310,7 @@ end
 ### Reseta Entradas do Usuário (ResetaEntrada)
 
 <p align="center">
-  <img src="../_resources/resetaEntrada.png" alt="Reseta entradas do usuário">
+  <img src=":/1e99fe79ba05416dbd6e4e522db2cc23" alt="Reseta entradas do usuário">
 </p>
 
 Circuito responsável por resetar as entradas selecionadas pelo usuário ao receber o acionamento da **resetKey**.
@@ -326,7 +326,7 @@ saidaResetEntrada <= !(keyReset && (estadoJogo <= recebeValor));
 ### Mostra Entradas do Usuário (MostraEntradas)
 
 <p align="center">
-  <img src="../_resources/mostraEntradas.png" alt="Mostra entradas do usuário">
+  <img src=":/b38fcc98df9e4964a14c4f530a40b2bb" alt="Mostra entradas do usuário">
 </p>
 
 Circuito responsável por mostrar as entradas selecionadas pelo usuário nos **displays de sete segmentos**.
@@ -375,7 +375,7 @@ ControlaHex #(.meuEstado(3'b011)) hexValor(
 ### Gerencia os Displays de Entradas do Usuário (ControlaHex)
 
 <p align="center">
-  <img src="../_resources/controlaHex.png" alt="Reseta entradas do usuário">
+  <img src=":/d992cfe020dc4a88a856b39b4bc7f3cc" alt="Reseta entradas do usuário">
 </p>
 
 Circuito instanciado três vezes, internamente ao **MostraEntradas** : **gerenciar entrada de linha, coluna e valor**.
@@ -433,7 +433,7 @@ else
 ### Fim de Jogo (FimJogo)
 
 <p align="center">
-  <img src="../_resources/fimJogo.png" alt="Circuito de Fim de Jogo">
+  <img src=":/a2278249527343369ab57e1766f91054" alt="Circuito de Fim de Jogo">
 </p>
 
 Circuito responsável por **reiniciar** o jogo, atuando de forma distinta com base em cada um dos possíveis casos de reinício.
@@ -460,7 +460,7 @@ else if(registradores == 2'b01 && keyPressed)
 ### Renderiza Saída no Monitor (Tabuleiro)
 
 <p align="center">
-  <img src="../_resources/tabuleiro.png" alt="Renderiza Tabuleiro">
+  <img src=":/3cc28ac3c64d49ba98f20a7f0625667f" alt="Renderiza Tabuleiro">
 </p>
 
 Circuito responsável por definir se derminado **pixel** recebido como entrada **pertence à renderização do tabuleiro** no monitor ou não.
@@ -488,7 +488,7 @@ end
 ### Renderiza Saída no Monitor (DesenhaNumeros)
 
 <p align="center">
-  <img src="../_resources/desenhaNum.png" alt="Renderiza Tabuleiro">
+  <img src=":/554a728a309642e8ad554f961dcdb7d7" alt="Renderiza Tabuleiro">
 </p>
 
 Circuito interno ao **Tabuleiro** responsável por definir se derminado **pixel** recebido como entrada **pertence ao bitmap do número** presente naquela posição ou não.
