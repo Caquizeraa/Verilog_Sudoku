@@ -504,7 +504,7 @@ if(jogadaValida) begin //acertou
 							
 	end
 						
-end // end jogada valida
+end
 ```
 
 ### Modo Fornece Dicas (ModoDica)
