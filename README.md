@@ -425,6 +425,35 @@ else
 ```
 
 ### Verifica Posição Escolhida pelo Usuário (VerificaPosicao)
+Circuito responsável por **verificar** a posição que o usuário escolheu para realizar sua jogada, analisando se está vazia (válida), ou se já está preenchida (inválida).
+
+O circuito retorna, se a verificação foi completa ou não. E também se a posição é válida ou inválida, enviando essas informações para o registrador **VerificaPosição**.
+
+Para verificar, o circuito realiza uma operação, analisando o array **sudokuJogador**, na posição inserida. Caso o valor nessa posição seja nulo, ela é válida (ou seja, pode-se ocorrer uma inserção). Caso esse valor seja diferente de zero, a posição é inválida.
+
+Após a verificação, analisa-se os seguinte casos:
+
+- Posição Válida
+	O estado **Recebe Valor** é ativo e o circuito atual pode ser desativado.
+- Posição Inválida
+	Os registradores de posição (linha e coluna), são resetados, portanto devem receber novos valores. O estado **Recebe Linha** é ativo, para prosseguir a receber uma nova posição e o circuito atual pode ser desativado.
+
+```
+indexSudoku = (regLinha  - 1) * 36 + (regColuna  - 1) * 4; //conta para encontrar a posição inserida no array
+				
+if(!sudokuJogador[indexSudoku +:4]) begin // pos valida
+	rstnRegistradores <= 1'b1; // nao limpará registradores
+	saidaPosicao <= 2'b11; // troca de estado no proximo clock
+	ehValida <= 1'b1;
+	jaVerificou <= 1'b1;
+end
+else begin //posição inválida
+	saidaPosicao <= 2'b00; // limpa registradores e aguarda para mudar de estado
+	rstnRegistradores <= 1'b1;
+	ehValida <= 1'b0;
+	jaVerificou <= 1'b1;
+end
+```
 
 ### Verifica Jogada Feita pelo Usuário (VerificaJogada)
 
