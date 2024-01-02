@@ -456,6 +456,56 @@ end
 ```
 
 ### Verifica Jogada Feita pelo Usuário (VerificaJogada)
+É o circuito responsável por verificar a jogada realizada pelo jogador, classificando-a em três estados.
+
+Os três estados serão salvos no registrador **VerificaJogada** e são: Jogada Inválida, Jogada Válida e Tabuleiro Incompleto, Jogada Válida e Tabuleiro Completo.
+
+O circuito inicialmente insere o valor selcionado pelo jogador, na posição escolhida do array **sudokuJogador**.  Primeiramente, se calcula a posição que o número deverá ser salvo, e os 4 bits dessa posição (originalmente iguais a 0) são trocado pelos 4 bits que representam o valor.
+
+Após isso, o circuito compara o valor no array **sudokuJogador** com o valor no array **sudokuCompleto**, ambos na posição escolhida. Podendo assim afirmar se a jogada é válida ou não.
+ 
+Caso a jogada seja inválida, o circuito atual será desativado, e o circuito **Fim de Jogo** ativado, resultando num reset instantâneo do jogo.
+ 
+ ```
+ if(!verificouJogada) begin
+	jogadaValida <= (sudokuCompleto[indexSudoku+:4] == sudokuBuffer[indexSudoku+:4]);
+	verificouJogada <= 1'b1;
+	computouJogada <= 1'b1;
+	saidaValor <= 3'b000;
+	rstnRegistradores <= 1'b1;
+end
+ ```
+ 
+Caso seja válida, ocorrerá uma nova verificação, que checa se essa jogada completou ou não o tabuleiro. 
+ 
+Se completou, o circuito atual é desativado e o circuito **Fim de Jogo** ativado, resultando num congelamento do jogo, e por conseguinte num reset geral, ao se pressionar um dos botões. 
+
+Se não completou, os registradores são limpos (exceto os que guardam informações sobre o tabuleiro), o circuito atual é desativado, e o estado **Recebe Linha** ativado, continuando o jogo.
+
+```
+if(jogadaValida) begin //acertou
+	if (sudokuBuffer == sudokuCompleto) begin //completo
+		saidaValor <= 3'b101;
+		rstnRegistradores <= 1'b1;
+	end
+			
+	else begin //incompleto
+	
+	// garantir que os registradores serão resetados antes da troca de estado		
+			if(!regLinha && !regColuna && !regValor && !regPosValida && !regVerificaJogo) begin
+				saidaValor <= 3'b100;
+				rstnRegistradores <= 1'b1; // não reseta e vai para estado de fim de jogo
+			end
+
+			else begin
+				saidaValor <= 3'b000;
+				rstnRegistradores <= 1'b0; // reseta e vai para estado de recebe linha
+			end
+							
+	end
+						
+end // end jogada valida
+```
 
 ### Modo Fornece Dicas (ModoDica)
 
