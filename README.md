@@ -509,6 +509,22 @@ end
 
 ### Modo Fornece Dicas (ModoDica)
 
+É um circuito extra, responsável por **auxiliar** o jogador a encontrar as posições e valores válidos.
+
+O **Modo Dica** é ativo por meio do Switch 0, utilizando o Led 0 para mostrar sua atividade.
+
+No estado **Recebe Linha**, o circuito acende todos os leds que representam linhas com espaços vazios, portanto apenas os leds equivalentes a linhas que ainda possuam jogadas válidas ligam.
+
+No estado **Recebe Coluna**, todos os leds que representam posições vazias na linha selecionada acendem, ou seja, apenas os leds de colunas válidas na linha já escolhida.
+
+Já no estado **Recebe Valor**, o circuito checa a linha, coluna e bloco da posição escolhida e acende apenas os leds de valores que não apareceram em nenhum destes. Sendo assim, o circuito ignora valores que o tabuleiro não permite, pois estes tornariam a jogada inválida.
+
+A lógica do circuito no estado **Recebe Linha** percorre todas as linhas do tabuleiro, caso encontre um espaço vazio, acende o Led referente a sua linha e pula para a próxima.
+
+A lógica no **Recebe Coluna**, percorre a linha escolhida, acendendo o Led respectivo a coluna quando encontra um espaço vazio.
+
+Já no **Recebe Valor**, primeiro o circuito percorre a linha selecionada, apagando todos os LEDS de valores encontrados. Depois faz o mesmo com a coluna e posteriormente com o bloco.
+
 ### Fim de Jogo (FimJogo)
 
 <p align="center">
